@@ -67,11 +67,11 @@ void inOrderTraversal(struct Node* head) {
 
     if(head!=NULL){
         if(head->leftChild!=NULL){
-            preOrderTraversal(head->leftChild);
+            inOrderTraversal(head->leftChild);
         }
         printf("%d ",head->data);
         if(head->rightChild!=NULL){
-            preOrderTraversal(head->rightChild);
+            inOrderTraversal(head->rightChild);
         } 
     }
 
@@ -82,10 +82,10 @@ void postOrderTraversal(struct Node* head) {
 
     if(head!=NULL){
         if(head->leftChild!=NULL){
-            preOrderTraversal(head->leftChild);
+            postOrderTraversal(head->leftChild);
         }
         if(head->rightChild!=NULL){
-            preOrderTraversal(head->rightChild);
+            postOrderTraversal(head->rightChild);
         }
         printf("%d ",head->data);
     }
@@ -105,7 +105,7 @@ int main()
         printf("Enter 1 to add a new number \n");
         printf("Enter 2 to PreOrder Traversal \n ");
         printf("Enter 3 to InOrder Traversal \n ");
-        printf("Enter 4 to PreOrder Traversal \n ");
+        printf("Enter 4 to PostOrder Traversal \n ");
         printf("Enter anything else to exit \n ");
         scanf("%d", &selection);
 
