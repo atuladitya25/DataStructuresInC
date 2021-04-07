@@ -5,7 +5,76 @@ struct Node {
     int data;
     struct Node* leftChild;
     struct Node* rightChild;
+    int height;
 };
+
+void rightRotate(struct Node* node){
+
+    struct Node* newNode = node -> leftChild;
+    node -> leftChild -> rightChild = node;
+    node -> leftChild = NULL;
+
+    node->height = node -> height = 1 + max(height(node -> rightChild), height(node -> leftChild));
+    newNode->height = node -> height = 1 + max(height(node -> rightChild), height(node -> leftChild));
+
+    return newNode;
+}
+
+void leftRotate(struct Node* node){
+
+    struct Node* newNode = node -> rightChild;
+    node -> rightChild -> leftChild = node;
+    node -> rightChild = NULL;
+
+    node->height = node -> height = 1 + max(height(node -> rightChild), height(node -> leftChild));
+    newNode->height = node -> height = 1 + max(height(node -> rightChild), height(node -> leftChild));
+
+    return newNode;
+}
+
+int max(int height1, int height2){
+
+    if( height1 > height2) {
+        return height1;
+    }
+    else {
+        return height2;
+    }
+}
+
+int height(struct Node* node){
+    if(node -> height == NULL){
+        return 0;
+    }
+    return node -> height;
+}
+
+struct Node* balanceNode(struct Node* node){
+
+    int balance = height(node -> leftChild) - height(node -> rightChild);
+    if(balance > 1 || balance <-1) {
+
+        if(balance>1){
+            if(height(node->leftChild->leftChild) - height(node->leftChild->rightChild)>0){
+                return rightRotate(node);
+            }
+            else{
+                node -> leftChild = leftRotate(node->leftChild);
+                return rightRotate(node);
+            }
+        }
+        else{
+            if(height(node->rightChild->rightChild) - height(node->rightChild->leftChild)>0){
+                return leftRotate(node);
+            }
+            else{
+                node -> rightChild = rightRotate(node->rightChild);
+                return leftRotate(node);
+            }
+        }
+    }
+
+}
   
 struct Node* createNode(struct Node* node, int enterData) {
 
@@ -14,6 +83,7 @@ struct Node* createNode(struct Node* node, int enterData) {
         newNode->data = enterData;
         newNode -> leftChild = NULL ;
         newNode -> rightChild = NULL ;
+        newNode -> height = 1;
         return newNode;
     }
     else if(node->data > enterData){
@@ -22,8 +92,11 @@ struct Node* createNode(struct Node* node, int enterData) {
     else if(node->data < enterData){
         node-> rightChild = createNode(node-> rightChild, enterData);
     }
+
+    node -> height = 1 + max(height(node -> rightChild), height(node -> leftChild));
+
+    return balanceNode(node);
     
-    return node;
 }
 
 void preOrderTraversal(struct Node* head) {
